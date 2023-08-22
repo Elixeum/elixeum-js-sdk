@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Demo Form</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="form">
+      <h2>Demo Form</h2>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
+        velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+        anim id est laborum.
+      </p>
+
+      <form onsubmit="submit">
+        <fieldset class="form_section">
+          <legend class="form_section_title">Entry data</legend>
+
+          <div class="form_row">
+            <div class="form_field">
+              <label for="consumption">Annual consumption</label>
+              <input type="text" name="consumption" />
+            </div>
+
+            <div class="form_field">
+              <label for="rooftops">Rooftop type</label>
+              <select name="rooftops" id="rooftop">
+                <option value="pointy">Pointy</option>
+                <option value="rounded">Rounded</option>
+                <option value="big">Big</option>
+                <option value="small">Small</option>
+              </select>
+            </div>
+
+            <div class="form_field">
+              <label for="solar_panels">Solar panels</label>
+              <select name="solar_panels" id="solar_panels">
+                <option value="mono">Mono</option>
+                <option value="poly">Poly</option>
+                <option value="thin">Thin</option>
+              </select>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="form_section">
+          <legend class="form_section_title">Important data</legend>
+
+          <div class="form_row">
+            <div class="form_field">
+              <label for="panels_count">Number of panels</label>
+              <input type="text" name="panels_count" />
+            </div>
+
+            <div class="form_field">
+              <label for="performance">Performance</label>
+              <input type="text" name="performance" />
+            </div>
+
+            <div class="form_field">
+              <label for="area">Area</label>
+              <input type="text" name="area" />
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="form_section">
+          <legend class="form_section_title">Individual items</legend>
+
+          <div class="form_row">
+            <div class="form_field">
+              <label for="item">Item 1</label>
+              <input type="text" name="item" />
+            </div>
+
+            <div class="form_field">
+              <label for="count">Count</label>
+              <select name="count">
+                <option value="1">1 piece</option>
+                <option value="2">2 pieces</option>
+                <option value="3">3 pieces</option>
+              </select>
+            </div>
+
+            <div class="form_field">
+              <label for="price">Price of one item</label>
+              <input type="text" name="price" />
+            </div>
+
+            <div class="form_field">
+              <label for="price_total">Total Price</label>
+              <input type="text" name="price_total" />
+            </div>
+          </div>
+
+          <div class="form_row">
+            <div class="form_field">
+              <label for="item">Item 2</label>
+              <input type="text" name="item" />
+            </div>
+
+            <div class="form_field">
+              <label for="count">Count</label>
+              <select name="count">
+                <option value="1">1 piece</option>
+                <option value="2">2 pieces</option>
+                <option value="3">3 pieces</option>
+              </select>
+            </div>
+
+            <div class="form_field">
+              <label for="price">Price of one item</label>
+              <input type="text" name="price" />
+            </div>
+
+            <div class="form_field">
+              <label for="price_total">Total Price</label>
+              <input type="text" name="price_total" />
+            </div>
+          </div>
+
+          <div class="form_row">
+            <div class="form_field">
+              <label for="item">Item 3</label>
+              <input type="text" name="item" />
+            </div>
+
+            <div class="form_field">
+              <label for="count">Count</label>
+              <select name="count">
+                <option value="1">1 piece</option>
+                <option value="2">2 pieces</option>
+                <option value="3">3 pieces</option>
+              </select>
+            </div>
+
+            <div class="form_field">
+              <label for="price">Price of one item</label>
+              <input type="text" name="price" />
+            </div>
+
+            <div class="form_field">
+              <label for="price_total">Total Price</label>
+              <input type="text" name="price_total" />
+            </div>
+          </div>
+        </fieldset>
+        <input type="submit" value="Submit" class="submit-button" id="submit" />
+      </form>
+    </div>
+
+    <script>
+      // TODO: (hillman) - Use the JS Library to submit this form once the JS Library is ready and remove the code below
+      // document.querySelector("form").addEventListener("submit", function (e) {
+      //   e.preventDefault();
+      //   const formData = new FormData(this);
+      //   const entires = formData.entries();
+
+      //   for (var input of entires) {
+      //     console.log(input[0] + ": " + input[1]);
+      //   }
+      // });
+    </script>
+  </body>
+</html>
