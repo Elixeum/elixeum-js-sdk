@@ -1,0 +1,16 @@
+{
+  "name": "elixeum-client",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "rollup -c",
+    "watch": "rollup -c -w"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@rollup/plugin-eslint": "^9.0.4",
+    "@rollup/plugin-terser": "^0.4.3",
+    "rollup": "^3.28.0"
+  },
+  "dependencies": {}
+}
