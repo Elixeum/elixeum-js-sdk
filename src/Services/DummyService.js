@@ -29,4 +29,4 @@ DummyService.prototype.TestHttpClient = function () {
         this.logger.log("DummyService TestHttpClient error", "debug");
         this.logger.log(error, "debug");
     });
-}
+};

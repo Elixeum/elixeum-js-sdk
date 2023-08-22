@@ -20,7 +20,6 @@ function ElixeumClient(config) {
 
     this.logger.log("SDK initialization started", "info");
 
-
     this.logger.log("Creating new HTTP client", "debug");
 
     // Prepare HTTP client

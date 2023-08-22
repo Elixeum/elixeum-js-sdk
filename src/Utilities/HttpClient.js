@@ -49,7 +49,7 @@ HttpClient.prototype.put = function (endpoint, data) {
  */
 HttpClient.prototype.setToken = function (token) {
     this.accessToken = token;
-}
+};
 
 /**
  * Creates Request object with delayed send method
