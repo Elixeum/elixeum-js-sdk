@@ -16,7 +16,7 @@
         anim id est laborum.
       </p>
 
-      <form onsubmit="submit">
+      <form id="form" action="" method="POST">
         <fieldset class="form_section">
           <legend class="form_section_title">Entry data</legend>
 
@@ -153,17 +153,29 @@
       </form>
     </div>
 
-    <script>
-      // TODO: (hillman) - Use the JS Library to submit this form once the JS Library is ready and remove the code below
-      // document.querySelector("form").addEventListener("submit", function (e) {
-      //   e.preventDefault();
-      //   const formData = new FormData(this);
-      //   const entires = formData.entries();
+    <script type="module">
+      import ElixeumClient from "/src/index.js";
+      import data from "/private-data.js";
 
-      //   for (var input of entires) {
-      //     console.log(input[0] + ": " + input[1]);
-      //   }
-      // });
+      console.log(data.apptoken);
+
+      // Create JS client, token, api are required
+      // Debug enables more debug logging
+      let elixeum = new ElixeumClient({ token: data.apptoken, api: "https://portal.elixeum.cloud", debug: true });
+
+      // Get CP object
+      let contractPlanning = elixeum.ContractPlanning();
+      let contractDraft = contractPlanning.ContractModel();
+
+      // Create draft request and send it (Send returns Promise)
+      let contractRequest = contractPlanning.CreateContractDraftRequest(contractDraft);
+
+      console.log(contractRequest);
+
+      // contractRequest.Send().then(
+      //   (sucess) => {},
+      //   (error) => {}
+      // );
     </script>
   </body>
 </html>
