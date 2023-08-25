@@ -26,5 +26,5 @@ ContractPlanning.prototype.ContractModel = function () {
  * @param {string} contractDraft - Object containing contract draft data from the form.
  */
 ContractPlanning.prototype.CreateContractDraftRequest = function (contractDraft) {
-  return this.httpClient.post("/api/ContractPlanning/AddAsync", contractDraft);
+  return this.httpClient.post("/contract-planning-service/api/contract", contractDraft);
 };
