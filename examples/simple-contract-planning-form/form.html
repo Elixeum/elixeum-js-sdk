@@ -23,12 +23,12 @@
           <div class="form_row">
             <div class="form_field">
               <label for="consumption">Annual consumption</label>
-              <input type="text" name="consumption" id="consumption" />
+              <input type="text" name="consumption" />
             </div>
 
             <div class="form_field">
               <label for="rooftops">Rooftop type</label>
-              <select name="rooftops" id="rooftop">
+              <select name="rooftops">
                 <option value="pointy">Pointy</option>
                 <option value="rounded">Rounded</option>
                 <option value="big">Big</option>
@@ -38,7 +38,7 @@
 
             <div class="form_field">
               <label for="solar_panels">Solar panels</label>
-              <select name="solar_panels" id="solar_panels">
+              <select name="solar_panels">
                 <option value="mono">Mono</option>
                 <option value="poly">Poly</option>
                 <option value="thin">Thin</option>
@@ -53,17 +53,17 @@
           <div class="form_row">
             <div class="form_field">
               <label for="panels_count">Number of panels</label>
-              <input type="text" name="panels_count" id="panels_count" />
+              <input type="text" name="panels_count" />
             </div>
 
             <div class="form_field">
               <label for="performance">Performance</label>
-              <input type="text" name="performance" id="performance" />
+              <input type="text" name="performance" />
             </div>
 
             <div class="form_field">
               <label for="area">Area</label>
-              <input type="text" name="area" id="area" />
+              <input type="text" name="area" />
             </div>
           </div>
         </fieldset>
@@ -73,13 +73,13 @@
 
           <div class="form_row">
             <div class="form_field">
-              <label for="item">Item 1</label>
-              <input type="text" name="item" id="item1" />
+              <label for="item1">Item 1</label>
+              <input type="text" name="item1" />
             </div>
 
             <div class="form_field">
-              <label for="count">Count</label>
-              <select name="count" id="item1_count">
+              <label for="item1_count">Count</label>
+              <select name="item1_count">
                 <option value="1">1 piece</option>
                 <option value="2">2 pieces</option>
                 <option value="3">3 pieces</option>
@@ -87,25 +87,25 @@
             </div>
 
             <div class="form_field">
-              <label for="price">Price of one item</label>
-              <input type="text" name="price" id="item1_price" />
+              <label for="item1_price">Price of one item</label>
+              <input type="text" name="item1_price" />
             </div>
 
             <div class="form_field">
-              <label for="price_total">Total Price</label>
-              <input type="text" name="price_total" id="item1_price-total" />
+              <label for="item1_price_total">Total Price</label>
+              <input type="text" name="item1_price_total" />
             </div>
           </div>
 
           <div class="form_row">
             <div class="form_field">
-              <label for="item">Item 2</label>
-              <input type="text" name="item" id="item2" />
+              <label for="item2">Item 2</label>
+              <input type="text" name="item2" />
             </div>
 
             <div class="form_field">
-              <label for="count">Count</label>
-              <select name="count" id="item2_count">
+              <label for="item2_count">Count</label>
+              <select name="item2_count">
                 <option value="1">1 piece</option>
                 <option value="2">2 pieces</option>
                 <option value="3">3 pieces</option>
@@ -113,25 +113,25 @@
             </div>
 
             <div class="form_field">
-              <label for="price">Price of one item</label>
-              <input type="text" name="price" />
+              <label for="item2_price">Price of one item</label>
+              <input type="text" name="item2_price" />
             </div>
 
             <div class="form_field">
-              <label for="price_total">Total Price</label>
-              <input type="text" name="price_total" id="item2_price-total" />
+              <label for="item2_price_total">Total Price</label>
+              <input type="text" name="item2_price_total" />
             </div>
           </div>
 
           <div class="form_row">
             <div class="form_field">
-              <label for="item">Item 3</label>
-              <input type="text" name="item" id="item3" />
+              <label for="item3">Item 3</label>
+              <input type="text" name="item3" />
             </div>
 
             <div class="form_field">
-              <label for="count">Count</label>
-              <select name="count" id="item3_count">
+              <label for="item3_count">Count</label>
+              <select name="item3_count">
                 <option value="1">1 piece</option>
                 <option value="2">2 pieces</option>
                 <option value="3">3 pieces</option>
@@ -139,13 +139,13 @@
             </div>
 
             <div class="form_field">
-              <label for="price">Price of one item</label>
-              <input type="text" name="price" id="item3_price" />
+              <label for="item3_price">Price of one item</label>
+              <input type="text" name="item3_price" />
             </div>
 
             <div class="form_field">
-              <label for="price_total">Total Price</label>
-              <input type="text" name="price_total" id="item3_price-total" />
+              <label for="item3_price_total">Total Price</label>
+              <input type="text" name="item3_price_total" />
             </div>
           </div>
         </fieldset>
@@ -159,7 +159,7 @@
 
       // Create JS client, token, api are required
       // Debug enables more debug logging
-      let elixeum = new ElixeumClient({ token: data.apptoken, api: "https://develop.portal.elixeum.cloud", debug: true });
+      let elixeum = new ElixeumClient({ token: data.apptoken, api: "http://localhost", debug: true });
 
       // Get CP object
       let contractPlanning = elixeum.ContractPlanning();
@@ -168,31 +168,32 @@
       let form = document.querySelector("#form");
       form.addEventListener("submit", (e) => {
         e.preventDefault();
+        let data = new FormData(form);
         let formData = {
-          consumption: document.querySelector("#form #consumption")?.value ?? "",
-          rooftops: document.querySelector("#form #rooftop")?.value ?? "",
-          solar_panels: document.querySelector("#form #solar_panels")?.value ?? "",
-          panels_count: document.querySelector("#form #panels_count")?.value ?? "",
-          performance: document.querySelector("#form #performance")?.value ?? "",
-          area: document.querySelector("#form #area")?.value ?? "",
+          consumption: data.get("consumption") ?? "",
+          rooftops: data.get("rooftops") ?? "",
+          solar_panels: data.get("solar_panels") ?? "",
+          panels_count: data.get("panels_count") ?? "",
+          performance: data.get("performance") ?? "",
+          area: data.get("area") ?? "",
           items: [
             {
-              item: document.querySelector("#form #item1")?.value ?? "",
-              count: document.querySelector("#form #item1_count")?.value ?? "",
-              price: document.querySelector("#form #item1_price")?.value ?? "",
-              price_total: document.querySelector("#form #item1_price-total")?.value ?? "",
+              item: data.get("item1") ?? "",
+              count: data.get("item1_count") ?? "",
+              price: data.get("item1_price") ?? "",
+              price_total: data.get("item1_price-total") ?? "",
             },
             {
-              item: document.querySelector("#form #item2")?.value ?? "",
-              count: document.querySelector("#form #item2_count")?.value ?? "",
-              price: document.querySelector("#form #item2_price")?.value ?? "",
-              price_total: document.querySelector("#form #item2_price-total")?.value ?? "",
+              item: data.get("item2") ?? "",
+              count: data.get("item2_count") ?? "",
+              price: data.get("item2_price") ?? "",
+              price_total: data.get("item2_price-total") ?? "",
             },
             {
-              item: document.querySelector("#form #item3")?.value ?? "",
-              count: document.querySelector("#form #item3_count")?.value ?? "",
-              price: document.querySelector("#form #item3_price")?.value ?? "",
-              price_total: document.querySelector("#form #item3_price-total")?.value ?? "",
+              item: data.get("item3") ?? "",
+              count: data.get("item3_count") ?? "",
+              price: data.get("item3_price") ?? "",
+              price_total: data.get("item3_price-total") ?? "",
             },
           ],
         };
