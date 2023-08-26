@@ -21,9 +21,19 @@ ContractPlanning.prototype.ContractModel = function () {
   this.completed = true;
 };
 
+/**
+ *  GetNewContract function
+ * @param {object} contractData - Object containing contract data from the form.
+ * @returns {object} - Object with typeNumber and contractTypeId.
+ */
 const getNewContract = (contractData) => {
-  contractData.typeNumber = 1;
-  contractData.contractTypeId = "6880ffff-fd4a-4d72-9515-3456e477bc65";
+  if (contractData?.typeNumber == null) {
+    contractData.typeNumber = 1;
+  }
+
+  if (contractData?.contractTypeId == null) {
+    contractData.contractTypeId = "6880ffff-fd4a-4d72-9515-3456e477bc65";
+  }
 
   if (contractData.contractFields?.length > 0) {
     let index = 0;
@@ -38,7 +48,8 @@ const getNewContract = (contractData) => {
 
 /**
  * ContractDraft model
- * @param {string} contractDraft - Object containing contract draft data from the form.
+ * @param {object} contractDraft - Object containing contract draft data from the form.
+ * @returns {object} - Object containing formatted contract draft data.
  */
 ContractPlanning.prototype.CreateContractDraftRequest = function (contractDraft) {
   let newContract = getNewContract(contractDraft);
