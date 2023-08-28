@@ -28,12 +28,17 @@ ContractPlanning.prototype.ContractModel = function () {
  */
 const getNewContract = (contractData) => {
   if (contractData?.typeNumber == null) {
-    contractData.typeNumber = 1;
+    contractData.typeNumber = 69;
   }
 
   if (contractData?.contractTypeId == null) {
-    contractData.contractTypeId = "6880ffff-fd4a-4d72-9515-3456e477bc65";
+    contractData.contractTypeId = "efd2f66b-dd44-4727-9718-2a84e12de6c4";
   }
+
+  contractData.contractFields = [
+    { customFieldId: "7b249d38-b918-44ad-90c8-5dbdce222c1c", value: contractData.rooftop_type },
+    { customFieldId: "7943ae28-0e05-460f-9575-6b83d86434ed", value: contractData.solar_panels },
+  ];
 
   if (contractData.contractFields?.length > 0) {
     let index = 0;
@@ -42,6 +47,11 @@ const getNewContract = (contractData) => {
       index++;
     }
   }
+
+  contractData.customs = {
+    "7b249d38-b918-44ad-90c8-5dbdce222c1c": contractData.rooftop_type,
+    "7943ae28-0e05-460f-9575-6b83d86434ed": contractData.solar_panels,
+  };
 
   return contractData;
 };
@@ -56,7 +66,13 @@ ContractPlanning.prototype.CreateContractDraftRequest = function (contractDraft)
   let newDocument = {
     date: new Date(),
     currencyCode: newContract.currencyCode ?? "CZK",
-    contact: null,
+    contact: {
+      roleType: 0,
+      phone: "+1",
+      displayName: "undefined undefined",
+      person: {},
+      addresses: [],
+    },
   };
 
   let toCreateContract = {
