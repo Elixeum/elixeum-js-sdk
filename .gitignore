@@ -133,3 +133,4 @@ dist
 !dist/index.html
 dist/
 node_modules/
+private-data.js

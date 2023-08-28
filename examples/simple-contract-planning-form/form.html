@@ -16,7 +16,7 @@
         anim id est laborum.
       </p>
 
-      <form onsubmit="submit">
+      <form id="form">
         <fieldset class="form_section">
           <legend class="form_section_title">Entry data</legend>
 
@@ -28,7 +28,7 @@
 
             <div class="form_field">
               <label for="rooftops">Rooftop type</label>
-              <select name="rooftops" id="rooftop">
+              <select name="rooftops">
                 <option value="pointy">Pointy</option>
                 <option value="rounded">Rounded</option>
                 <option value="big">Big</option>
@@ -38,7 +38,7 @@
 
             <div class="form_field">
               <label for="solar_panels">Solar panels</label>
-              <select name="solar_panels" id="solar_panels">
+              <select name="solar_panels">
                 <option value="mono">Mono</option>
                 <option value="poly">Poly</option>
                 <option value="thin">Thin</option>
@@ -73,13 +73,13 @@
 
           <div class="form_row">
             <div class="form_field">
-              <label for="item">Item 1</label>
-              <input type="text" name="item" />
+              <label for="item1">Item 1</label>
+              <input type="text" name="item1" />
             </div>
 
             <div class="form_field">
-              <label for="count">Count</label>
-              <select name="count">
+              <label for="item1_count">Count</label>
+              <select name="item1_count">
                 <option value="1">1 piece</option>
                 <option value="2">2 pieces</option>
                 <option value="3">3 pieces</option>
@@ -87,25 +87,25 @@
             </div>
 
             <div class="form_field">
-              <label for="price">Price of one item</label>
-              <input type="text" name="price" />
+              <label for="item1_price">Price of one item</label>
+              <input type="text" name="item1_price" />
             </div>
 
             <div class="form_field">
-              <label for="price_total">Total Price</label>
-              <input type="text" name="price_total" />
+              <label for="item1_price_total">Total Price</label>
+              <input type="text" name="item1_price_total" />
             </div>
           </div>
 
           <div class="form_row">
             <div class="form_field">
-              <label for="item">Item 2</label>
-              <input type="text" name="item" />
+              <label for="item2">Item 2</label>
+              <input type="text" name="item2" />
             </div>
 
             <div class="form_field">
-              <label for="count">Count</label>
-              <select name="count">
+              <label for="item2_count">Count</label>
+              <select name="item2_count">
                 <option value="1">1 piece</option>
                 <option value="2">2 pieces</option>
                 <option value="3">3 pieces</option>
@@ -113,25 +113,25 @@
             </div>
 
             <div class="form_field">
-              <label for="price">Price of one item</label>
-              <input type="text" name="price" />
+              <label for="item2_price">Price of one item</label>
+              <input type="text" name="item2_price" />
             </div>
 
             <div class="form_field">
-              <label for="price_total">Total Price</label>
-              <input type="text" name="price_total" />
+              <label for="item2_price_total">Total Price</label>
+              <input type="text" name="item2_price_total" />
             </div>
           </div>
 
           <div class="form_row">
             <div class="form_field">
-              <label for="item">Item 3</label>
-              <input type="text" name="item" />
+              <label for="item3">Item 3</label>
+              <input type="text" name="item3" />
             </div>
 
             <div class="form_field">
-              <label for="count">Count</label>
-              <select name="count">
+              <label for="item3_count">Count</label>
+              <select name="item3_count">
                 <option value="1">1 piece</option>
                 <option value="2">2 pieces</option>
                 <option value="3">3 pieces</option>
@@ -139,13 +139,13 @@
             </div>
 
             <div class="form_field">
-              <label for="price">Price of one item</label>
-              <input type="text" name="price" />
+              <label for="item3_price">Price of one item</label>
+              <input type="text" name="item3_price" />
             </div>
 
             <div class="form_field">
-              <label for="price_total">Total Price</label>
-              <input type="text" name="price_total" />
+              <label for="item3_price_total">Total Price</label>
+              <input type="text" name="item3_price_total" />
             </div>
           </div>
         </fieldset>
@@ -153,17 +153,64 @@
       </form>
     </div>
 
-    <script>
-      // TODO: (hillman) - Use the JS Library to submit this form once the JS Library is ready and remove the code below
-      // document.querySelector("form").addEventListener("submit", function (e) {
-      //   e.preventDefault();
-      //   const formData = new FormData(this);
-      //   const entires = formData.entries();
+    <script type="module">
+      import ElixeumClient from "/src/index.js";
+      import data from "/private-data.js";
 
-      //   for (var input of entires) {
-      //     console.log(input[0] + ": " + input[1]);
-      //   }
-      // });
+      // Create JS client, token, api are required
+      // Debug enables more debug logging
+      let elixeum = new ElixeumClient({ token: data.apptoken, api: "http://localhost", debug: true });
+
+      // Get CP object
+      let contractPlanning = elixeum.ContractPlanning();
+      let contractDraft = contractPlanning.ContractModel();
+
+      let form = document.querySelector("#form");
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        let data = new FormData(form);
+        let formData = {
+          consumption: data.get("consumption") ?? "",
+          rooftops: data.get("rooftops") ?? "",
+          solar_panels: data.get("solar_panels") ?? "",
+          panels_count: data.get("panels_count") ?? "",
+          performance: data.get("performance") ?? "",
+          area: data.get("area") ?? "",
+          items: [
+            {
+              item: data.get("item1") ?? "",
+              count: data.get("item1_count") ?? "",
+              price: data.get("item1_price") ?? "",
+              price_total: data.get("item1_price-total") ?? "",
+            },
+            {
+              item: data.get("item2") ?? "",
+              count: data.get("item2_count") ?? "",
+              price: data.get("item2_price") ?? "",
+              price_total: data.get("item2_price-total") ?? "",
+            },
+            {
+              item: data.get("item3") ?? "",
+              count: data.get("item3_count") ?? "",
+              price: data.get("item3_price") ?? "",
+              price_total: data.get("item3_price-total") ?? "",
+            },
+          ],
+        };
+
+        // Create draft request and send it (Send returns Promise)
+        let contractRequest = contractPlanning.CreateContractDraftRequest(formData);
+        console.log(contractRequest);
+
+        contractRequest.send().then(
+          (success) => {
+            console.log(success);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      });
     </script>
   </body>
 </html>
