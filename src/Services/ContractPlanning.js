@@ -32,12 +32,12 @@ const getNewContract = (contractData) => {
   }
 
   if (contractData?.contractTypeId == null) {
-    contractData.contractTypeId = "efd2f66b-dd44-4727-9718-2a84e12de6c4";
+    contractData.contractTypeId = "1348e339-be9a-47bc-b685-e6ad942f6fd9";
   }
 
   contractData.contractFields = [
-    { customFieldId: "7b249d38-b918-44ad-90c8-5dbdce222c1c", value: contractData.rooftop_type },
-    { customFieldId: "7943ae28-0e05-460f-9575-6b83d86434ed", value: contractData.solar_panels },
+    { customFieldId: "22d35354-cd3d-451b-81c4-94af534d8345", value: contractData.rooftop_type },
+    { customFieldId: "c00d5545-52ff-4ddb-a8fc-a46e04058967", value: contractData.solar_panels },
   ];
 
   if (contractData.contractFields?.length > 0) {
@@ -49,8 +49,8 @@ const getNewContract = (contractData) => {
   }
 
   contractData.customs = {
-    "7b249d38-b918-44ad-90c8-5dbdce222c1c": contractData.rooftop_type,
-    "7943ae28-0e05-460f-9575-6b83d86434ed": contractData.solar_panels,
+    "22d35354-cd3d-451b-81c4-94af534d8345": contractData.rooftop_type,
+    "c00d5545-52ff-4ddb-a8fc-a46e04058967": contractData.solar_panels,
   };
 
   return contractData;
@@ -66,13 +66,7 @@ ContractPlanning.prototype.CreateContractDraftRequest = function (contractDraft)
   let newDocument = {
     date: new Date(),
     currencyCode: newContract.currencyCode ?? "CZK",
-    contact: {
-      roleType: 0,
-      phone: "+1",
-      displayName: "undefined undefined",
-      person: {},
-      addresses: [],
-    },
+    contact: null,
   };
 
   let toCreateContract = {

@@ -159,7 +159,7 @@
 
       // Create JS client, token, api are required
       // Debug enables more debug logging
-      let elixeum = new ElixeumClient({ token: data.apptoken, api: "https://alpha.portal.elixeum.cloud", debug: true });
+      let elixeum = new ElixeumClient({ token: data.apptoken, api: "http://localhost", debug: true });
 
       // Get CP object
       let contractPlanning = elixeum.ContractPlanning();
@@ -171,7 +171,7 @@
         let data = new FormData(form);
         let formData = {
           consumption: data.get("consumption") ?? "",
-          rooftops: data.get("rooftops") ?? "",
+          rooftop_type: data.get("rooftops") ?? "",
           solar_panels: data.get("solar_panels") ?? "",
           panels_count: data.get("panels_count") ?? "",
           performance: data.get("performance") ?? "",
@@ -200,7 +200,6 @@
 
         // Create draft request and send it (Send returns Promise)
         let contractRequest = contractPlanning.CreateContractDraftRequest(formData);
-        console.log(contractRequest);
 
         contractRequest.send().then(
           (success) => {
