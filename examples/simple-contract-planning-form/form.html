@@ -173,7 +173,7 @@
 
             <div class="form_field">
               <label for="phone">Phone</label>
-              <input type="number" name="phone" />
+              <input type="text" name="phone" minlength="9" />
             </div>
           </div>
         </fieldset>
@@ -192,6 +192,22 @@
       // Get CP object
       let contractPlanning = elixeum.ContractPlanning();
       let contractDraft = contractPlanning.ContractModel();
+
+      const formatPhoneNumber = (number) => {
+        if (number == null) {
+          return "";
+        }
+
+        if (number.length == 9) {
+          return "+420" + number;
+        }
+
+        if (number.startsWith("+")) {
+          return number;
+        } else {
+          return "+" + number;
+        }
+      };
 
       let form = document.querySelector("#form");
       form.addEventListener("submit", (e) => {
@@ -231,9 +247,9 @@
               pin: data.get("email") ?? "",
               firstName: data.get("first_name") ?? "",
               lastName: data.get("last_name") ?? "",
-              phone: data.get("phone") ?? "",
+              phone: formatPhoneNumber(data.get("phone") ?? ""),
             },
-            phone: data.get("phone") ?? "",
+            phone: formatPhoneNumber(data.get("phone") ?? ""),
             displayName: data.get("first_name") + " " + data.get("last_name"),
             identifier: data.get("email") ?? "",
             addresses: [],
@@ -246,9 +262,12 @@
         contractRequest.send().then(
           (success) => {
             console.log(success);
+            alert("Contract draft created");
+            form.reset();
           },
           (error) => {
             console.log(error);
+            alert("Error creating contract draft");
           }
         );
       });
