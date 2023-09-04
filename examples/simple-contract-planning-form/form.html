@@ -149,6 +149,34 @@
             </div>
           </div>
         </fieldset>
+
+        <fieldset class="form_section">
+          <legend class="form_section_title">Contact information</legend>
+
+          <div class="form_row">
+            <div class="form_field">
+              <label for="first_name">First name</label>
+              <input type="text" name="first_name" />
+            </div>
+
+            <div class="form_field">
+              <label for="last_name">Last name</label>
+              <input type="text" name="last_name" />
+            </div>
+          </div>
+
+          <div class="form_row">
+            <div class="form_field">
+              <label for="email">Email</label>
+              <input type="text" name="email" />
+            </div>
+
+            <div class="form_field">
+              <label for="phone">Phone</label>
+              <input type="number" name="phone" />
+            </div>
+          </div>
+        </fieldset>
         <input type="submit" value="Submit" class="submit-button" id="submit" />
       </form>
     </div>
@@ -196,6 +224,20 @@
               price_total: data.get("item3_price-total") ?? "",
             },
           ],
+          contact_information: {
+            roleType: 0,
+            email: data.get("email") ?? "",
+            person: {
+              pin: data.get("email") ?? "",
+              firstName: data.get("first_name") ?? "",
+              lastName: data.get("last_name") ?? "",
+              phone: data.get("phone") ?? "",
+            },
+            phone: data.get("phone") ?? "",
+            displayName: data.get("first_name") + " " + data.get("last_name"),
+            identifier: data.get("email") ?? "",
+            addresses: [],
+          },
         };
 
         // Create draft request and send it (Send returns Promise)

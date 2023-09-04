@@ -56,6 +56,18 @@ const getNewContract = (contractData) => {
   return contractData;
 };
 
+const getNewDocument = (contractData) => {
+  let contact = contractData?.contact_information ?? {};
+
+  let newDocument = {
+    date: new Date(),
+    currencyCode: contractData.currencyCode ?? "CZK",
+    contact: contact,
+  };
+
+  return newDocument;
+};
+
 /**
  * ContractDraft model
  * @param {object} contractDraft - Object containing contract draft data from the form.
@@ -63,11 +75,7 @@ const getNewContract = (contractData) => {
  */
 ContractPlanning.prototype.CreateContractDraftRequest = function (contractDraft) {
   let newContract = getNewContract(contractDraft);
-  let newDocument = {
-    date: new Date(),
-    currencyCode: newContract.currencyCode ?? "CZK",
-    contact: null,
-  };
+  let newDocument = getNewDocument(contractDraft);
 
   let toCreateContract = {
     contract: newContract,
