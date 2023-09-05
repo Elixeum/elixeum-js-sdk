@@ -28,16 +28,16 @@ ContractPlanning.prototype.ContractModel = function () {
  */
 const getNewContract = (contractData) => {
   if (contractData?.typeNumber == null) {
-    contractData.typeNumber = 69;
+    contractData.typeNumber = 414;
   }
 
   if (contractData?.contractTypeId == null) {
-    contractData.contractTypeId = "1348e339-be9a-47bc-b685-e6ad942f6fd9";
+    contractData.contractTypeId = "52b4807d-aaeb-4522-bd49-b8c3e8375a70";
   }
 
   contractData.contractFields = [
-    { customFieldId: "22d35354-cd3d-451b-81c4-94af534d8345", value: contractData.rooftop_type },
-    { customFieldId: "c00d5545-52ff-4ddb-a8fc-a46e04058967", value: contractData.solar_panels },
+    { customFieldId: "6e69b2ce-18ff-475e-95e6-a09a0bd84de6", value: contractData.rooftop_type },
+    { customFieldId: "8cff81e9-160c-4ebc-bb2d-dd3f931314b8", value: contractData.solar_panels },
   ];
 
   if (contractData.contractFields?.length > 0) {
@@ -49,13 +49,18 @@ const getNewContract = (contractData) => {
   }
 
   contractData.customs = {
-    "22d35354-cd3d-451b-81c4-94af534d8345": contractData.rooftop_type,
-    "c00d5545-52ff-4ddb-a8fc-a46e04058967": contractData.solar_panels,
+    "6e69b2ce-18ff-475e-95e6-a09a0bd84de6": contractData.rooftop_type,
+    "8cff81e9-160c-4ebc-bb2d-dd3f931314b8": contractData.solar_panels,
   };
 
   return contractData;
 };
 
+/**
+ * GetNewDocument function
+ * @param {object} contractData - Object containing contract data from the form.
+ * @returns {object} - Object with date, currencyCode and contact.
+ */
 const getNewDocument = (contractData) => {
   let contact = contractData?.contact_information ?? {};
 
