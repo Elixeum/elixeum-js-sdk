@@ -256,8 +256,19 @@
           },
         };
 
+        let contractData = {
+          contract: {
+            typeNumber: 414,
+            contractTypeId: "52b4807d-aaeb-4522-bd49-b8c3e8375a70",
+          },
+          customFields: [
+            { customFieldId: "6e69b2ce-18ff-475e-95e6-a09a0bd84de6", value: formData.rooftop_type },
+            { customFieldId: "8cff81e9-160c-4ebc-bb2d-dd3f931314b8", value: formData.solar_panels },
+          ],
+        };
+
         // Create draft request and send it (Send returns Promise)
-        let contractRequest = contractPlanning.CreateContractDraftRequest(formData);
+        let contractRequest = contractPlanning.CreateContractDraftRequest(formData, contractData);
 
         contractRequest.send().then(
           (success) => {
