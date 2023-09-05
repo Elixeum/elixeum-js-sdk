@@ -149,6 +149,34 @@
             </div>
           </div>
         </fieldset>
+
+        <fieldset class="form_section">
+          <legend class="form_section_title">Contact information</legend>
+
+          <div class="form_row">
+            <div class="form_field">
+              <label for="first_name">First name</label>
+              <input type="text" name="first_name" />
+            </div>
+
+            <div class="form_field">
+              <label for="last_name">Last name</label>
+              <input type="text" name="last_name" />
+            </div>
+          </div>
+
+          <div class="form_row">
+            <div class="form_field">
+              <label for="email">Email</label>
+              <input type="text" name="email" />
+            </div>
+
+            <div class="form_field">
+              <label for="phone">Phone</label>
+              <input type="text" name="phone" minlength="9" />
+            </div>
+          </div>
+        </fieldset>
         <input type="submit" value="Submit" class="submit-button" id="submit" />
       </form>
     </div>
@@ -159,11 +187,27 @@
 
       // Create JS client, token, api are required
       // Debug enables more debug logging
-      let elixeum = new ElixeumClient({ token: data.apptoken, api: "http://localhost", debug: true });
+      let elixeum = new ElixeumClient({ token: data.apptoken, api: "https://develop.portal.elixeum.cloud", debug: true });
 
       // Get CP object
       let contractPlanning = elixeum.ContractPlanning();
       let contractDraft = contractPlanning.ContractModel();
+
+      const formatPhoneNumber = (number) => {
+        if (number == null) {
+          return "";
+        }
+
+        if (number.length == 9) {
+          return "+420" + number;
+        }
+
+        if (number.startsWith("+")) {
+          return number;
+        } else {
+          return "+" + number;
+        }
+      };
 
       let form = document.querySelector("#form");
       form.addEventListener("submit", (e) => {
@@ -196,17 +240,45 @@
               price_total: data.get("item3_price-total") ?? "",
             },
           ],
+          contact_information: {
+            roleType: 0,
+            email: data.get("email") ?? "",
+            person: {
+              pin: data.get("email") ?? "",
+              firstName: data.get("first_name") ?? "",
+              lastName: data.get("last_name") ?? "",
+              phone: formatPhoneNumber(data.get("phone") ?? ""),
+            },
+            phone: formatPhoneNumber(data.get("phone") ?? ""),
+            displayName: data.get("first_name") + " " + data.get("last_name"),
+            identifier: data.get("email") ?? "",
+            addresses: [],
+          },
+        };
+
+        let contractData = {
+          contract: {
+            typeNumber: 414,
+            contractTypeId: "52b4807d-aaeb-4522-bd49-b8c3e8375a70",
+          },
+          customFields: [
+            { customFieldId: "6e69b2ce-18ff-475e-95e6-a09a0bd84de6", value: formData.rooftop_type },
+            { customFieldId: "8cff81e9-160c-4ebc-bb2d-dd3f931314b8", value: formData.solar_panels },
+          ],
         };
 
         // Create draft request and send it (Send returns Promise)
-        let contractRequest = contractPlanning.CreateContractDraftRequest(formData);
+        let contractRequest = contractPlanning.CreateContractDraftRequest(formData, contractData);
 
         contractRequest.send().then(
           (success) => {
             console.log(success);
+            alert("Contract draft created");
+            form.reset();
           },
           (error) => {
             console.log(error);
+            alert("Error creating contract draft");
           }
         );
       });
