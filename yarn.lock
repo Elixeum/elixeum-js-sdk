@@ -12,6 +12,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@elixeum/js-sdk@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "@elixeum/js-sdk@workspace:."
+  dependencies:
+    "@rollup/plugin-eslint": ^9.0.4
+    "@rollup/plugin-terser": ^0.4.3
+    rollup: ^3.29.0
+  languageName: unknown
+  linkType: soft
+
 "@eslint-community/eslint-utils@npm:^4.2.0":
   version: 4.4.0
   resolution: "@eslint-community/eslint-utils@npm:4.4.0"
@@ -550,16 +560,6 @@ __metadata:
   checksum: 7d00d7cd8e49b9afa762a813faac332dee781932d6f2c848dc348939c4253f1d4564341b7af1d041853bc3f32c2ef141b58e0a4d9862c17a7f08f68df1e0f1ed
   languageName: node
   linkType: hard
-
-"elixeum-js-sdk@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "elixeum-js-sdk@workspace:."
-  dependencies:
-    "@rollup/plugin-eslint": ^9.0.4
-    "@rollup/plugin-terser": ^0.4.3
-    rollup: ^3.29.0
-  languageName: unknown
-  linkType: soft
 
 "emoji-regex@npm:^8.0.0":
   version: 8.0.0
