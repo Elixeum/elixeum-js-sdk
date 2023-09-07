@@ -30,6 +30,10 @@ We're excited to see what you'll create with the Elixeum JS SDK! Happy coding :s
 
 Use simple `<script>` tag to include pre-built SDK from Github, or import it using `import` statement.
 
+```html
+<script src="https://github.com/Elixeum/elixeum-js-sdk/releases/download/v0.1.0-alpha/elx-sdk.min.js"></script>
+```
+
 ### Generate Application Token
 
 In your tenant settings, generate application token with permissions which you will be using.

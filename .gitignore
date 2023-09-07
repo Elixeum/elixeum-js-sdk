@@ -129,8 +129,8 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-.DS_Store/
 !dist/index.html
 dist/
 node_modules/
 private-data.js
+.DS_Store

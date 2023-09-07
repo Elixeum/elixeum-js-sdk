@@ -7,7 +7,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 export default {
   input: "src/index.js",
   output: {
-    file: isProduction ? 'dist/bundle.min.js' : 'dist/bundle.js',
+    file: isProduction ? 'dist/elx-sdk.min.js' : 'dist/elx-sdk.js',
     format: "umd", // For browser and node
     name: "ElixeumClient",
     sourcemap: !isProduction,
