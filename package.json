@@ -10,7 +10,7 @@
   "devDependencies": {
     "@rollup/plugin-eslint": "^9.0.4",
     "@rollup/plugin-terser": "^0.4.3",
-    "rollup": "^3.29.0"
+    "rollup": "^3.29.4"
   },
   "packageManager": "yarn@3.6.3"
 }
