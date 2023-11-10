@@ -56,7 +56,7 @@ To build the SDK from source, you will need to have Node.js, Bun or Deno install
 After that, just clone the repository, install dependencies and run the build script.
 
 ```bash
-# Define environment variable fi you want to build for production which creates minified bundle
+# Define variable if you want to build for production which creates minified bundle
 NODE_ENV=production
 
 # NPM
