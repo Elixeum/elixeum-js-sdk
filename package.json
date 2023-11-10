@@ -10,6 +10,9 @@
   "devDependencies": {
     "@rollup/plugin-eslint": "^9.0.5",
     "@rollup/plugin-terser": "^0.4.4",
+    "@stylistic/eslint-plugin-js": "^1.0.1",
+    "eslint": "^8.53.0",
+    "prettier": "^3.0.3",
     "rollup": "^4.3.0"
   },
   "packageManager": "yarn@4.0.1"
