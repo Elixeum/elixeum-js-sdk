@@ -3,7 +3,7 @@
     "browser": true,
     "es2021": true
   },
-  "plugins": ["@stylistic"],
+  "plugins": ["@stylistic/js"],
   "extends": ["eslint:recommended"],
   "parserOptions": {
     "ecmaVersion": "latest",
@@ -20,12 +20,15 @@
     "no-debugger": "error",
     "no-var": "error",
     "prefer-const": "error",
-    "@stylistic/quotes": ["error", "double"],
-    "@stylistic/semi": ["error", "always"],
-    "@stylistic/no-multi-spaces": "error",
-    "@stylistic/arrow-spacing": ["error", { "before": true, "after": true }],
-    "@stylistic/no-trailing-spaces": "error",
-    "@stylistic/keyword-spacing": ["error", { "before": true, "after": true }],
-    "@stylistic/object-curly-spacing": ["error", "always"]
+    "@stylistic/js/quotes": ["error", "double"],
+    "@stylistic/js/semi": ["error", "always"],
+    "@stylistic/js/no-multi-spaces": "error",
+    "@stylistic/js/arrow-spacing": ["error", { "before": true, "after": true }],
+    "@stylistic/js/no-trailing-spaces": "error",
+    "@stylistic/js/keyword-spacing": [
+      "error",
+      { "before": true, "after": true }
+    ],
+    "@stylistic/js/object-curly-spacing": ["error", "always"]
   }
 }
