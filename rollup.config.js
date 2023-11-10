@@ -4,7 +4,7 @@ import process from "node:process";
 
 const isProduction = process.env.NODE_ENV === "production";
 
-let config = {
+const config = {
   input: "src/index.js",
   output: {
     file: isProduction ? "dist/elx-sdk.min.js" : "dist/elx-sdk.js",
