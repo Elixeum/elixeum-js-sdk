@@ -19,14 +19,59 @@
           name="company_name"
           placeholder="Název společnosti, za kterou jednáte"
         />
-        <input type="text" name="person_name" placeholder="Jméno a příjmení" />
+        <input type="text" name="first_name" placeholder="Jméno" />
+        <input type="text" name="last_name" placeholder="Příjmení" />
         <input type="tel" name="telephone" placeholder="Telefonní číslo" />
         <input type="email" name="email" placeholder="E-mailová adresa" />
+        <!-- <input type="submit" value="submit" /> -->
         <button type="submit" class="form__submit">
           Odeslat Štěpánovi
           <img src="assets/stepan.png" alt="Štěpán" />
         </button>
       </form>
     </div>
+    <script type="module">
+      import ElixeumClient from "/src/index.js";
+      import data from "/private-data.js";
+
+      // Create JS client, token, api are required
+      // Debug enables more debug logging
+      let elixeum = new ElixeumClient({
+        token: data.apptokenCRM,
+        api: "https://api-develop.elixeum.cloud",
+        debug: true,
+      });
+
+      // Get CRM object
+      let crm = elixeum.CRM();
+      let contactDraft = crm.ContactModel();
+
+      let form = document.querySelector("#form");
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        let data = new FormData(form);
+        let formData = {
+          companyName: data.get("company_name") ?? "",
+          firstName: data.get("first_name") ?? "",
+          lastName: data.get("last_name") ?? "",
+          displayName: data.get("first_name") + " " + data.get("last_name"),
+          telephone: data.get("telephone") ?? "",
+          email: data.get("email") ?? "",
+        };
+
+        // Create draft request and send it (Send returns Promise)
+        let contactRequest = crm.CreateContactDraftRequest(formData);
+        console.log(contactRequest);
+
+        contactRequest.send().then(
+          (success) => {
+            console.log(success);
+          },
+          (error) => {
+            console.log(error);
+          },
+        );
+      });
+    </script>
   </body>
 </html>
