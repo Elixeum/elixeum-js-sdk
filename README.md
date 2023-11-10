@@ -59,7 +59,7 @@ After that, just clone the repository, install dependencies and run the build sc
 # Define environment variable fi you want to build for production which creates minified bundle
 NODE_ENV=production
 
-#  NPM
+# NPM
 npm install
 npm run build
 
