@@ -49,3 +49,28 @@ let elixeum = new ElixeumClient({
   debug: true,
 });
 ```
+
+## Build from source
+
+To build the SDK from source, you will need to have Node.js, Bun or Deno installed.
+After that, just clone the repository, install dependencies and run the build script.
+
+```bash
+# Define environment variable fi you want to build for production which creates minified bundle
+NODE_ENV=production
+
+#  NPM
+npm install
+npm run build
+
+# Yarn
+yarn install
+yarn build
+
+# Bun
+bun install
+bun run build
+
+# Deno
+deno task build
+```
