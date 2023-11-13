@@ -59,12 +59,8 @@ CRM.prototype.CreateContactDraftRequest = function (contactDraft) {
  * @returns {object} - Object containing formatted customer data.
  */
 CRM.prototype.CreateCustomerRequest = function (contactDraft, contactId) {
-  console.log({ contactDraft, contactId });
-
   let contact = this.GetNewContact(contactDraft);
   contact.contactRoleList = [{ id: contactId, roleType: 0, displayName: contactDraft.displayName }];
-
-  console.log(contact);
 
   let toCreateCustomer = {
     contactId: contactId,
