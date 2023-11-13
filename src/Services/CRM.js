@@ -32,6 +32,7 @@ CRM.prototype.GetNewContact = function (contactDraft) {
     displayName: contactDraft.companyName,
     identifier: contactDraft.email,
     languageCode: "cs",
+    contactRoleList: [],
     person: {
       firstName: contactDraft.firstName,
       lastName: contactDraft.lastName,
@@ -58,11 +59,24 @@ CRM.prototype.CreateContactDraftRequest = function (contactDraft) {
  * @returns {object} - Object containing formatted customer data.
  */
 CRM.prototype.CreateCustomerRequest = function (contactDraft, contactId) {
+  console.log({ contactDraft, contactId });
+
+  let contact = this.GetNewContact(contactDraft);
+  contact.contactRoleList = [{ id: contactId, roleType: 0, displayName: contactDraft.displayName }];
+
+  console.log(contact);
+
   let toCreateCustomer = {
     contactId: contactId,
-    contact: this.GetNewContact(contactDraft),
+    contact: contact,
     emailList: [
       {
+        contactMethodType: {
+          id: "abd1604b-25a1-4da1-9514-06ba858a7558",
+          code: "OTHER",
+          name: "Ostatní",
+          description: "",
+        },
         isActive: true,
         isMain: true,
         value: contactDraft.email,
@@ -70,6 +84,12 @@ CRM.prototype.CreateCustomerRequest = function (contactDraft, contactId) {
     ],
     telephoneList: [
       {
+        contactMethodType: {
+          id: "abd1604b-25a1-4da1-9514-06ba858a7558",
+          code: "OTHER",
+          name: "Ostatní",
+          description: "",
+        },
         isActive: true,
         isMain: true,
         value: contactDraft.phone,

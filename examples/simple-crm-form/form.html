@@ -29,10 +29,15 @@
       import ElixeumClient from "/src/index.js";
       import data from "/private-data.js";
 
+      // TODO: Create apptoken with required permissions in your tenant and use it here
+      // Please keep in mind, the token is visible to the user, so it can be misused
+      // Limit permissions to the minimum required
+      let appToken = data.apptokenCRM;
+
       // Create JS client, token, api are required
       // Debug enables more debug logging
       let elixeum = new ElixeumClient({
-        token: data.apptokenCRM,
+        token: appToken,
         api: "https://api-develop.elixeum.cloud",
         debug: true,
       });
@@ -44,6 +49,7 @@
       let form = document.querySelector("#form");
       form.addEventListener("submit", (e) => {
         e.preventDefault();
+
         let data = new FormData(form);
         let formData = {
           companyName: data.get("company_name") ?? "",
@@ -53,23 +59,23 @@
           email: data.get("email") ?? "",
         };
 
+        // Create draft request and send it (Send returns Promise)
         let contactRequest = crm.CreateContactDraftRequest(formData);
 
-        if (contactRequest?.id != null) {
+        contactRequest.send().then((contact) => {
           // Create draft request and send it (Send returns Promise)
-          let customerRequest = crm.CreateCustomerRequest(formData, contactRequest.id);
-
-          console.log(customerRequest);
+          let customerRequest = crm.CreateCustomerRequest(formData, contact.id);
 
           customerRequest.send().then(
             (success) => {
               console.log(success);
+              form.reset();
             },
             (error) => {
               console.log(error);
             },
           );
-        }
+        });
       });
     </script>
   </body>
