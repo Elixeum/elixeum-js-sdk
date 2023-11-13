@@ -22,38 +22,42 @@ ContractPlanning.prototype.ContractModel = function () {
 };
 
 /**
- *  GetNewContract function
- * @param {object} contractData - Object containing contract data from the form.
- * @returns {object} - Object with typeNumber and contractTypeId.
+ *  GetNewContract model
+ * @param {object} dataFromForm - Object containing contract data from the form.
+ * @param {object} dataFromPortal - Object containing contract data from the portal. (custom fields, contract type, etc.)
+ * @returns {object} - Object with typeNumber, contractTypeId and contractFields.
  */
-const getNewContract = (contractData) => {
-  if (contractData?.typeNumber == null) {
-    contractData.typeNumber = 69;
-  }
+ContractPlanning.prototype.GetNewContract = function (dataFromForm, dataFromPortal) {
+  dataFromForm.typeNumber = dataFromPortal.contract?.typeNumber;
+  dataFromForm.contractTypeId = dataFromPortal.contract?.contractTypeId;
+  dataFromForm.contractFields = dataFromPortal.customFields;
 
-  if (contractData?.contractTypeId == null) {
-    contractData.contractTypeId = "1348e339-be9a-47bc-b685-e6ad942f6fd9";
-  }
-
-  contractData.contractFields = [
-    { customFieldId: "22d35354-cd3d-451b-81c4-94af534d8345", value: contractData.rooftop_type },
-    { customFieldId: "c00d5545-52ff-4ddb-a8fc-a46e04058967", value: contractData.solar_panels },
-  ];
-
-  if (contractData.contractFields?.length > 0) {
+  if (dataFromForm.contractFields?.length > 0) {
     let index = 0;
-    for (const contractField of contractData.contractFields) {
+    for (const contractField of dataFromForm.contractFields) {
       contractField.order = index;
       index++;
     }
   }
 
-  contractData.customs = {
-    "22d35354-cd3d-451b-81c4-94af534d8345": contractData.rooftop_type,
-    "c00d5545-52ff-4ddb-a8fc-a46e04058967": contractData.solar_panels,
+  return dataFromForm;
+};
+
+/**
+ * GetNewDocument model
+ * @param {object} contractData - Object containing contract data from the form.
+ * @returns {object} - Object with date, currencyCode and contact.
+ */
+ContractPlanning.prototype.GetNewDocument = function (contractData) {
+  let contact = contractData?.contact_information ?? {};
+
+  let newDocument = {
+    date: new Date(),
+    currencyCode: contractData.currencyCode ?? "CZK",
+    contact: contact,
   };
 
-  return contractData;
+  return newDocument;
 };
 
 /**
@@ -61,13 +65,9 @@ const getNewContract = (contractData) => {
  * @param {object} contractDraft - Object containing contract draft data from the form.
  * @returns {object} - Object containing formatted contract draft data.
  */
-ContractPlanning.prototype.CreateContractDraftRequest = function (contractDraft) {
-  let newContract = getNewContract(contractDraft);
-  let newDocument = {
-    date: new Date(),
-    currencyCode: newContract.currencyCode ?? "CZK",
-    contact: null,
-  };
+ContractPlanning.prototype.CreateContractDraftRequest = function (dataFromForm, dataFromPortal) {
+  let newContract = this.GetNewContract(dataFromForm, dataFromPortal);
+  let newDocument = this.GetNewDocument(dataFromForm);
 
   let toCreateContract = {
     contract: newContract,
