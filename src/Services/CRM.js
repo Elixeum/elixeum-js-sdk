@@ -22,16 +22,14 @@ CRM.prototype.ContactModel = function () {
 };
 
 /**
- * ContactDraft model
+ *  GetNewContact model
  * @param {object} contactDraft - Object containing contact draft data from the form.
- * @returns {object} - Object containing formatted contract draft data.
+ * @returns {object} - Object with currencyCode, displayName, identifier, languageCode and person.
  */
-CRM.prototype.CreateContactDraftRequest = function (contactDraft) {
-  console.log(contactDraft);
-
-  let toCreateContact = {
+CRM.prototype.GetNewContact = function (contactDraft) {
+  return {
     currencyCode: "CZK",
-    displayName: contactDraft.displayName,
+    displayName: contactDraft.companyName,
     identifier: contactDraft.email,
     languageCode: "cs",
     person: {
@@ -40,10 +38,44 @@ CRM.prototype.CreateContactDraftRequest = function (contactDraft) {
       pin: contactDraft.email,
     },
   };
+};
 
-  console.log(toCreateContact);
-
-  // TODO: get Id from created contact and create customer with email and telephone from the example form (/party/api/customer)
+/**
+ * ContactDraft model
+ * @param {object} contactDraft - Object containing contact draft data from the form.
+ * @returns {object} - Object containing formatted contract draft data.
+ */
+CRM.prototype.CreateContactDraftRequest = function (contactDraft) {
+  let toCreateContact = this.GetNewContact(contactDraft);
 
   return this.httpClient.post("/party/api/contact", toCreateContact);
+};
+
+/**
+ * ContactDraft model
+ * @param {object} contactDraft - Object containing contact draft data from the form.
+ * @param {string} contactId - Id of the previosly created contact.
+ * @returns {object} - Object containing formatted customer data.
+ */
+CRM.prototype.CreateCustomerRequest = function (contactDraft, contactId) {
+  let toCreateCustomer = {
+    contactId: contactId,
+    contact: this.GetNewContact(contactDraft),
+    emailList: [
+      {
+        isActive: true,
+        isMain: true,
+        value: contactDraft.email,
+      },
+    ],
+    telephoneList: [
+      {
+        isActive: true,
+        isMain: true,
+        value: contactDraft.phone,
+      },
+    ],
+  };
+
+  return this.httpClient.post("/party/api/customer", toCreateCustomer);
 };

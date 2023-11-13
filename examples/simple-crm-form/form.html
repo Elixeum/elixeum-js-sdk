@@ -10,15 +10,10 @@
     <div class="wrapper">
       <form id="form">
         <p>
-          Abychom se mohli před setkáním připravit a poradit Vám rychle jak a
-          kde ušetřit, dejte si prosím práci a odpovězte nám na pár otázek.
+          Abychom se mohli před setkáním připravit a poradit Vám rychle jak a kde ušetřit, dejte si prosím práci a odpovězte nám na pár otázek.
           Plusové jsou důležité, základní povinné.
         </p>
-        <input
-          type="text"
-          name="company_name"
-          placeholder="Název společnosti, za kterou jednáte"
-        />
+        <input type="text" name="company_name" placeholder="Název společnosti, za kterou jednáte" />
         <input type="text" name="first_name" placeholder="Jméno" />
         <input type="text" name="last_name" placeholder="Příjmení" />
         <input type="tel" name="telephone" placeholder="Telefonní číslo" />
@@ -54,23 +49,27 @@
           companyName: data.get("company_name") ?? "",
           firstName: data.get("first_name") ?? "",
           lastName: data.get("last_name") ?? "",
-          displayName: data.get("first_name") + " " + data.get("last_name"),
           telephone: data.get("telephone") ?? "",
           email: data.get("email") ?? "",
         };
 
-        // Create draft request and send it (Send returns Promise)
         let contactRequest = crm.CreateContactDraftRequest(formData);
-        console.log(contactRequest);
 
-        contactRequest.send().then(
-          (success) => {
-            console.log(success);
-          },
-          (error) => {
-            console.log(error);
-          },
-        );
+        if (contactRequest?.id != null) {
+          // Create draft request and send it (Send returns Promise)
+          let customerRequest = crm.CreateCustomerRequest(formData, contactRequest.id);
+
+          console.log(customerRequest);
+
+          customerRequest.send().then(
+            (success) => {
+              console.log(success);
+            },
+            (error) => {
+              console.log(error);
+            },
+          );
+        }
       });
     </script>
   </body>
