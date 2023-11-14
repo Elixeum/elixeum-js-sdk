@@ -3,7 +3,7 @@
     "browser": true,
     "es2021": true
   },
-  "plugins": ["@stylistic/js"],
+  "plugins": ["@stylistic/js", "html"],
   "extends": ["eslint:recommended"],
   "parserOptions": {
     "ecmaVersion": "latest",
@@ -25,10 +25,7 @@
     "@stylistic/js/no-multi-spaces": "error",
     "@stylistic/js/arrow-spacing": ["error", { "before": true, "after": true }],
     "@stylistic/js/no-trailing-spaces": "error",
-    "@stylistic/js/keyword-spacing": [
-      "error",
-      { "before": true, "after": true }
-    ],
+    "@stylistic/js/keyword-spacing": ["error", { "before": true, "after": true }],
     "@stylistic/js/object-curly-spacing": ["error", "always"]
   }
 }
