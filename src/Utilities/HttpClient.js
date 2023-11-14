@@ -5,9 +5,9 @@
  * @param {object} logger - Logger object
  */
 export function HttpClient(baseUrl, logger) {
-    this.baseUrl = baseUrl;
-    this.accessToken = null;
-    this.logger = logger;
+  this.baseUrl = baseUrl;
+  this.accessToken = null;
+  this.logger = logger;
 }
 
 /**
@@ -16,8 +16,8 @@ export function HttpClient(baseUrl, logger) {
  * @returns {Request} - Request object
  */
 HttpClient.prototype.get = function (endpoint) {
-    const request = new this.Request("GET", endpoint, null, this.makeRequest.bind(this));
-    return request;
+  const request = new this.Request("GET", endpoint, null, this.makeRequest.bind(this));
+  return request;
 };
 
 /**
@@ -27,8 +27,8 @@ HttpClient.prototype.get = function (endpoint) {
  * @returns {Request} - Request object
  */
 HttpClient.prototype.post = function (endpoint, data) {
-    const request = new this.Request("POST", endpoint, data, this.makeRequest.bind(this));
-    return request;
+  const request = new this.Request("POST", endpoint, data, this.makeRequest.bind(this));
+  return request;
 };
 
 /**
@@ -38,8 +38,8 @@ HttpClient.prototype.post = function (endpoint, data) {
  * @returns {Request} - Request object
  */
 HttpClient.prototype.put = function (endpoint, data) {
-    const request = new this.Request("PUT", endpoint, data, this.makeRequest.bind(this));
-    return request;
+  const request = new this.Request("PUT", endpoint, data, this.makeRequest.bind(this));
+  return request;
 };
 
 /**
@@ -48,7 +48,7 @@ HttpClient.prototype.put = function (endpoint, data) {
  * @returns {void}
  */
 HttpClient.prototype.setToken = function (token) {
-    this.accessToken = token;
+  this.accessToken = token;
 };
 
 /**
@@ -61,9 +61,9 @@ HttpClient.prototype.setToken = function (token) {
  * @returns {void}
  */
 HttpClient.prototype.Request = function (method, endpoint, data, makeRequest) {
-    this.send = function (extraHeaders = {}) {
-        return makeRequest(method, endpoint, data, extraHeaders);
-    }
+  this.send = function (extraHeaders = {}) {
+    return makeRequest(method, endpoint, data, extraHeaders);
+  };
 };
 
 /**
@@ -75,39 +75,39 @@ HttpClient.prototype.Request = function (method, endpoint, data, makeRequest) {
  * @returns {Promise} - Promise object with response
  */
 HttpClient.prototype.makeRequest = function (method, endpoint, data, headers = {}) {
-    this.logger.log(`HTTP Request ${method} ${this.baseUrl}${endpoint}`, "debug");
+  this.logger.log(`HTTP Request ${method} ${this.baseUrl}${endpoint}`, "debug");
 
-    return new Promise((resolve, reject) => {
-        const url = this.baseUrl + endpoint;
-        const options = {
-            method: method,
-            headers: {
-                "Content-Type": "application/json",
-                ...headers
-            }
-        };
+  return new Promise((resolve, reject) => {
+    const url = this.baseUrl + endpoint;
+    const options = {
+      method: method,
+      headers: {
+        "Content-Type": "application/json",
+        ...headers,
+      },
+    };
 
-        if (this.accessToken) {
-            options.headers["Authorization"] = `Bearer ${this.accessToken}`;
+    if (this.accessToken) {
+      options.headers["Authorization"] = `Bearer ${this.accessToken}`;
+    }
+
+    if (data) {
+      options.body = JSON.stringify(data);
+    }
+
+    fetch(url, options)
+      .then((response) => {
+        if (!response.ok) {
+          reject(new Error("Network response was not ok"));
         }
 
-        if (data) {
-            options.body = JSON.stringify(data);
-        }
-
-        fetch(url, options)
-            .then(response => {
-                if (!response.ok) {
-                    reject(new Error("Network response was not ok"));
-                }
-
-                return response.json();
-            })
-            .then(data => {
-                resolve(data);
-            })
-            .catch(error => {
-                reject(error);
-            });
-    });
+        return response.json();
+      })
+      .then((data) => {
+        resolve(data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
 };

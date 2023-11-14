@@ -1,7 +1,8 @@
-import { Logger } from "./Utilities/Logger.js";
-import { HttpClient } from "./Utilities/HttpClient.js";
+import { CRM } from "./Services/CRM.js";
 import { ContractPlanning } from "./Services/ContractPlanning.js";
 import { DummyService } from "./Services/DummyService.js";
+import { HttpClient } from "./Utilities/HttpClient.js";
+import { Logger } from "./Utilities/Logger.js";
 
 /**
  * ElixeumClient constructor
@@ -34,6 +35,7 @@ function ElixeumClient(config) {
 
   // Initialize services
   this.ContractPlanning = () => new ContractPlanning(context);
+  this.CRM = () => new CRM(context);
   this.DummyService = () => new DummyService(context);
 }
 

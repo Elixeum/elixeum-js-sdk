@@ -17,6 +17,8 @@ const config = {
     eslint({
       throwOnError: true,
       throwOnWarning: true,
+      include: ["src/**/*.js", "examples/**/*.{js,html}"],
+      exclude: ["node_modules/**"],
     }),
   ],
 };
