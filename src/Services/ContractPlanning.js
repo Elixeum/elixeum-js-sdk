@@ -49,9 +49,9 @@ ContractPlanning.prototype.GetNewContract = function (dataFromForm, dataFromPort
  * @returns {object} - Object with date, currencyCode and contact.
  */
 ContractPlanning.prototype.GetNewDocument = function (contractData) {
-  let contact = contractData?.contact_information ?? {};
+  const contact = contractData?.contact_information ?? {};
 
-  let newDocument = {
+  const newDocument = {
     date: new Date(),
     currencyCode: contractData.currencyCode ?? "CZK",
     contact: contact,
@@ -66,10 +66,10 @@ ContractPlanning.prototype.GetNewDocument = function (contractData) {
  * @returns {object} - Object containing formatted contract draft data.
  */
 ContractPlanning.prototype.CreateContractDraftRequest = function (dataFromForm, dataFromPortal) {
-  let newContract = this.GetNewContract(dataFromForm, dataFromPortal);
-  let newDocument = this.GetNewDocument(dataFromForm);
+  const newContract = this.GetNewContract(dataFromForm, dataFromPortal);
+  const newDocument = this.GetNewDocument(dataFromForm);
 
-  let toCreateContract = {
+  const toCreateContract = {
     contract: newContract,
     document: newDocument,
   };
