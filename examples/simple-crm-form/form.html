@@ -28,7 +28,7 @@
     <script>
       // Prefill form with dummy data
       // TODO: Remove this, it's just for demo purposes
-      let prefill = true;
+      const prefill = true;
 
       if (prefill) {
         window.onload = fillFormWithDummyData;
@@ -61,26 +61,25 @@
       // TODO: Create apptoken with required permissions in your tenant and use it here
       // Please keep in mind, the token is visible to the user, so it can be misused
       // Limit permissions to the minimum required
-      let appToken = data.apptokenCRM;
+      const appToken = data.apptokenCRM;
 
       // Create JS client, token, api are required
       // Debug enables more debug logging
-      let elixeum = new ElixeumClient({
+      const elixeum = new ElixeumClient({
         token: appToken,
         api: "https://api-develop.elixeum.cloud",
         debug: true,
       });
 
       // Get CRM object
-      let crm = elixeum.CRM();
-      let contactDraft = crm.ContactModel();
+      const crm = elixeum.CRM();
 
-      let form = document.querySelector("#form");
+      const form = document.querySelector("#form");
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        let data = new FormData(form);
-        let formData = {
+        const data = new FormData(form);
+        const formData = {
           companyName: data.get("company_name") ?? "",
           firstName: data.get("first_name") ?? "",
           lastName: data.get("last_name") ?? "",
@@ -91,14 +90,14 @@
         };
 
         // Create draft request and send it (Send returns Promise)
-        let contactRequest = await crm.CreateContactDraftRequest(formData);
+        const contactRequest = await crm.CreateContactDraftRequest(formData);
 
         contactRequest.send().then(async (contact) => {
           // Create draft request and send it (Send returns Promise)
-          let customerRequest = await crm.CreateCustomerRequest(formData, contact.id);
+          const customerRequest = await crm.CreateCustomerRequest(formData, contact.id);
 
           customerRequest.send().then(
-            (success) => {
+            () => {
               form.reset();
             },
             (error) => {
