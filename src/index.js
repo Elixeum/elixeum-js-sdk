@@ -15,10 +15,7 @@ function ElixeumClient(config) {
 
   // Validate config
   if (!this.validateConfig(this.configuration)) {
-    this.logger.log(
-      "SDK failed to initialize, invalid configuration!",
-      "error",
-    );
+    this.logger.log("SDK failed to initialize, invalid configuration!", "error");
     return;
   }
 
@@ -57,10 +54,7 @@ ElixeumClient.prototype.validateConfig = function (configObject) {
   const missingKeys = requiredKeys.filter((key) => !(key in configObject));
 
   if (missingKeys.length > 0) {
-    this.logger.log(
-      `Missing keys in config object: ${missingKeys.join(", ")}`,
-      "error",
-    );
+    this.logger.log(`Missing keys in config object: ${missingKeys.join(", ")}`, "error");
     return false;
   }
 
@@ -74,10 +68,7 @@ ElixeumClient.prototype.validateConfig = function (configObject) {
 
   // Check if `api` is containing `elixeum.cloud` domain
   if (!configObject.api.includes("elixeum.cloud")) {
-    this.logger.log(
-      "The API URL should be pointing to elixeum.cloud domain",
-      "warn",
-    );
+    this.logger.log("The API URL should be pointing to elixeum.cloud domain", "warn");
   }
 
   // All checks passed
