@@ -42,6 +42,14 @@ CRM.prototype.GetNewContact = function (contactDraft) {
 };
 
 /**
+ * ContactMethodType model
+ * @returns {object} - Object containing contact method type data.
+ */
+CRM.prototype.GetContactMethodTypes = function () {
+  return this.httpClient.get("/party/api/contact-method-type");
+};
+
+/**
  * ContactDraft model
  * @param {object} contactDraft - Object containing contact draft data from the form.
  * @returns {object} - Object containing formatted contract draft data.
@@ -60,6 +68,18 @@ CRM.prototype.CreateContactDraftRequest = function (contactDraft) {
  */
 CRM.prototype.CreateCustomerRequest = function (contactDraft, contactId) {
   let contact = this.GetNewContact(contactDraft);
+  let contactMethodTypes = this.GetContactMethodTypes()
+    .send()
+    .then((response) => {
+      return response;
+    });
+
+  const getMethodType = async () => {
+    return await contactMethodTypes[0];
+  };
+
+  let contactMethodType = getMethodType();
+
   contact.contactRoleList = [{ id: contactId, roleType: 0, displayName: contactDraft.displayName }];
 
   let toCreateCustomer = {
@@ -67,12 +87,7 @@ CRM.prototype.CreateCustomerRequest = function (contactDraft, contactId) {
     contact: contact,
     emailList: [
       {
-        contactMethodType: {
-          id: "abd1604b-25a1-4da1-9514-06ba858a7558",
-          code: "OTHER",
-          name: "Ostatní",
-          description: "",
-        },
+        contactMethodType: contactMethodType,
         isActive: true,
         isMain: true,
         value: contactDraft.email,
@@ -80,12 +95,7 @@ CRM.prototype.CreateCustomerRequest = function (contactDraft, contactId) {
     ],
     telephoneList: [
       {
-        contactMethodType: {
-          id: "abd1604b-25a1-4da1-9514-06ba858a7558",
-          code: "OTHER",
-          name: "Ostatní",
-          description: "",
-        },
+        contactMethodType: contactMethodType,
         isActive: true,
         isMain: true,
         value: contactDraft.phone,
