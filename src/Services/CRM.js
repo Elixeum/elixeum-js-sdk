@@ -94,7 +94,7 @@ CRM.prototype.CreateCustomerRequest = async function (contactDraft, contactId) {
         contactMethodType: contactMethodType,
         isActive: true,
         isMain: true,
-        value: contactDraft.phone,
+        value: contactDraft.telephone,
       },
     ],
   };
