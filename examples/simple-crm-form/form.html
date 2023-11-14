@@ -13,11 +13,11 @@
           Abychom se mohli před setkáním připravit a poradit Vám rychle jak a kde ušetřit, dejte si prosím práci a odpovězte nám na pár otázek.
           Plusové jsou důležité, základní povinné.
         </p>
-        <input type="text" name="company_name" placeholder="Název společnosti, za kterou jednáte" />
-        <input type="text" name="first_name" placeholder="Jméno" />
-        <input type="text" name="last_name" placeholder="Příjmení" />
-        <input type="tel" name="telephone" placeholder="Telefonní číslo" />
-        <input type="email" name="email" placeholder="E-mailová adresa" />
+        <input type="text" name="company_name" id="company_name" placeholder="Název společnosti, za kterou jednáte" />
+        <input type="text" name="first_name" id="first_name" placeholder="Jméno" />
+        <input type="text" name="last_name" id="last_name" placeholder="Příjmení" />
+        <input type="tel" name="telephone" id="telephone" placeholder="Telefonní číslo" />
+        <input type="email" name="email" id="email" placeholder="E-mailová adresa" />
         <!-- <input type="submit" value="submit" /> -->
         <button type="submit" class="form__submit">
           Odeslat Štěpánovi
@@ -25,6 +25,35 @@
         </button>
       </form>
     </div>
+    <script>
+      // Prefill form with dummy data
+      // TODO: Remove this, it's just for demo purposes
+      let prefill = true;
+
+      if (prefill) {
+        window.onload = fillFormWithDummyData;
+      }
+
+      function fillFormWithDummyData() {
+        document.querySelector("#company_name").value = getRandomName();
+        document.querySelector("#first_name").value = getRandomName();
+        document.querySelector("#last_name").value = getRandomName();
+        document.querySelector("#telephone").value = getRandomPhone();
+        document.querySelector("#email").value = getRandomEmail();
+      }
+
+      function getRandomName() {
+        return Math.random().toString(36).substring(7);
+      }
+
+      function getRandomPhone() {
+        return Math.random().toString(36).substring(7);
+      }
+
+      function getRandomEmail() {
+        return Math.random().toString(36).substring(7) + "@elixeum.com";
+      }
+    </script>
     <script type="module">
       import ElixeumClient from "/src/index.js";
       import data from "/private-data.js";
@@ -68,7 +97,6 @@
 
           customerRequest.send().then(
             (success) => {
-              console.log(success);
               form.reset();
             },
             (error) => {
