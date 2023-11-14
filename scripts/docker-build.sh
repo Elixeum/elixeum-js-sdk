@@ -4,7 +4,7 @@ set -e
 SCRIPT_PATH=$(dirname "$0")
 DOCKER_TAG=elixeum-js-sdk:latest
 DOCKER_TEMP_NAME=elixeum-js-sdk-tmp
-DOCKER_NODE_ENV=production
+DOCKER_NODE_ENV=${1:-production}
 DOCKER_INNER_DIST_PATH=/source/dist
 DOCKER_OUTER_DIST_PATH=./artifacts
 DOCKER_DOCKERFILE_PATH=$SCRIPT_PATH/../
