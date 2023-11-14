@@ -28,10 +28,10 @@ CRM.prototype.ContactModel = function () {
  */
 CRM.prototype.GetNewContact = function (contactDraft) {
   return {
-    currencyCode: "CZK",
+    currencyCode: contactDraft.currencyCode,
     displayName: contactDraft.companyName,
     identifier: contactDraft.email,
-    languageCode: "cs",
+    languageCode: contactDraft.languageCode,
     contactRoleList: [],
     person: {
       firstName: contactDraft.firstName,
