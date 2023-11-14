@@ -17,6 +17,7 @@ const config = {
     eslint({
       throwOnError: true,
       throwOnWarning: true,
+      include: ["src/**/*.js"],
     }),
   ],
 };
