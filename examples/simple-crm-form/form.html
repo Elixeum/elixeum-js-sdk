@@ -47,7 +47,7 @@
       let contactDraft = crm.ContactModel();
 
       let form = document.querySelector("#form");
-      form.addEventListener("submit", (e) => {
+      form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
         let data = new FormData(form);
@@ -60,11 +60,11 @@
         };
 
         // Create draft request and send it (Send returns Promise)
-        let contactRequest = crm.CreateContactDraftRequest(formData);
+        let contactRequest = await crm.CreateContactDraftRequest(formData);
 
-        contactRequest.send().then((contact) => {
+        contactRequest.send().then(async (contact) => {
           // Create draft request and send it (Send returns Promise)
-          let customerRequest = crm.CreateCustomerRequest(formData, contact.id);
+          let customerRequest = await crm.CreateCustomerRequest(formData, contact.id);
 
           customerRequest.send().then(
             (success) => {

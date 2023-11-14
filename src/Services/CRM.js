@@ -66,19 +66,15 @@ CRM.prototype.CreateContactDraftRequest = function (contactDraft) {
  * @param {string} contactId - Id of the previosly created contact.
  * @returns {object} - Object containing formatted customer data.
  */
-CRM.prototype.CreateCustomerRequest = function (contactDraft, contactId) {
+CRM.prototype.CreateCustomerRequest = async function (contactDraft, contactId) {
   let contact = this.GetNewContact(contactDraft);
   let contactMethodTypes = this.GetContactMethodTypes()
     .send()
-    .then((response) => {
-      return response;
+    .then(async (response) => {
+      return await response;
     });
 
-  const getMethodType = async () => {
-    return await contactMethodTypes[0];
-  };
-
-  let contactMethodType = getMethodType();
+  let contactMethodType = (await contactMethodTypes)[0];
 
   contact.contactRoleList = [{ id: contactId, roleType: 0, displayName: contactDraft.displayName }];
 
