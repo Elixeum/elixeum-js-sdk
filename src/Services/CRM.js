@@ -55,7 +55,7 @@ CRM.prototype.GetContactMethodTypes = function () {
  * @returns {object} - Object containing formatted contract draft data.
  */
 CRM.prototype.CreateContactDraftRequest = function (contactDraft) {
-  let toCreateContact = this.GetNewContact(contactDraft);
+  const toCreateContact = this.GetNewContact(contactDraft);
 
   return this.httpClient.post("/party/api/contact", toCreateContact);
 };
@@ -67,18 +67,18 @@ CRM.prototype.CreateContactDraftRequest = function (contactDraft) {
  * @returns {object} - Object containing formatted customer data.
  */
 CRM.prototype.CreateCustomerRequest = async function (contactDraft, contactId) {
-  let contact = this.GetNewContact(contactDraft);
-  let contactMethodTypes = this.GetContactMethodTypes()
+  const contact = this.GetNewContact(contactDraft);
+  const contactMethodTypes = this.GetContactMethodTypes()
     .send()
     .then(async (response) => {
       return await response;
     });
 
-  let contactMethodType = (await contactMethodTypes)[0];
+  const contactMethodType = (await contactMethodTypes)[0];
 
   contact.contactRoleList = [{ id: contactId, roleType: 0, displayName: contactDraft.displayName }];
 
-  let toCreateCustomer = {
+  const toCreateCustomer = {
     contactId: contactId,
     contact: contact,
     emailList: [
