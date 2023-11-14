@@ -74,7 +74,13 @@ CRM.prototype.CreateCustomerRequest = async function (contactDraft, contactId) {
       return await response;
     });
 
-  const contactMethodType = (await contactMethodTypes)[0];
+  const getContactMethodType = async () => {
+    const loadedContactMethodTypes = await contactMethodTypes;
+
+    return loadedContactMethodTypes.find(({ code }) => code === "OTHER") ?? loadedContactMethodTypes[0];
+  };
+
+  const contactMethodType = await getContactMethodType();
 
   contact.contactRoleList = [{ id: contactId, roleType: 0, displayName: contactDraft.displayName }];
 
