@@ -29,7 +29,7 @@ CRM.prototype.ContactModel = function () {
 CRM.prototype.GetNewContact = function (contactDraft) {
   return {
     currencyCode: contactDraft.currencyCode,
-    displayName: contactDraft.companyName,
+    displayName: contactDraft.firstName + " " + contactDraft.lastName,
     identifier: contactDraft.email,
     languageCode: contactDraft.languageCode,
     contactRoleList: [],
@@ -47,6 +47,14 @@ CRM.prototype.GetNewContact = function (contactDraft) {
  */
 CRM.prototype.GetContactMethodTypes = function () {
   return this.httpClient.get("/party/api/contact-method-type");
+};
+
+/**
+ * NoteType model
+ * @returns {object} - Object containing note type data.
+ */
+CRM.prototype.GetNoteTypes = function () {
+  return this.httpClient.get("/party/api/note-type");
 };
 
 /**
@@ -74,13 +82,28 @@ CRM.prototype.CreateCustomerRequest = async function (contactDraft, contactId) {
       return await response;
     });
 
-  const getContactMethodType = async () => {
-    const loadedContactMethodTypes = await contactMethodTypes;
+  const noteTypes = this.GetNoteTypes()
+    .send()
+    .then(async (response) => {
+      return await response;
+    });
 
-    return loadedContactMethodTypes.find(({ code }) => code === "OTHER") ?? loadedContactMethodTypes[0];
+  const getType = async (typeOfWhat) => {
+    let types = [];
+
+    if (typeOfWhat === "contactMethod") {
+      types = await contactMethodTypes;
+    } else if (typeOfWhat === "note") {
+      types = await noteTypes;
+    }
+
+    return types.find(({ code }) => code === "OTHER") ?? types[0];
   };
 
-  const contactMethodType = await getContactMethodType();
+  const contactMethodType = await getType("contactMethod");
+  const noteType = await getType("note");
+
+  console.log({ contactMethodType, noteType });
 
   contact.contactRoleList = [{ id: contactId, roleType: 0, displayName: contactDraft.displayName }];
 
@@ -103,6 +126,14 @@ CRM.prototype.CreateCustomerRequest = async function (contactDraft, contactId) {
         value: contactDraft.telephone,
       },
     ],
+    noteListDto: {
+      noteList: [
+        {
+          noteType: noteType,
+          text: contactDraft.note,
+        },
+      ],
+    },
   };
 
   return this.httpClient.post("/party/api/customer", toCreateCustomer);
