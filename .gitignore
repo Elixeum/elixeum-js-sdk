@@ -134,3 +134,5 @@ dist/
 node_modules/
 private-data.js
 .DS_Store
+
+artifacts/
