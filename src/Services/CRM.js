@@ -42,6 +42,34 @@ CRM.prototype.GetNewContact = function (contactDraft) {
 };
 
 /**
+ * ToTimestampFromDate model
+ * @param {object} value - Object containing date value.
+ * @returns {object} - Object with seconds and nanos.
+ */
+CRM.prototype.ToTimestampFromDate = function (value) {
+  // eslint-disable-next-line eqeqeq
+  if (value == null || value === "") {
+    return {
+      seconds: 0,
+      nanos: 0,
+    };
+  }
+
+  //NOTE: Implicit conversion from js string to Date object
+  let dateValue = value;
+  if (typeof value === "string" || value instanceof String) {
+    dateValue = new Date(value);
+  }
+
+  const timestamp = {
+    seconds: Math.floor(dateValue.getTime() / 1000),
+    nanos: (dateValue.getTime() % 1000) * 1e6,
+  };
+
+  return timestamp;
+};
+
+/**
  * ContactMethodType model
  * @returns {object} - Object containing contact method type data.
  */
@@ -103,8 +131,6 @@ CRM.prototype.CreateCustomerRequest = async function (contactDraft, contactId) {
   const contactMethodType = await getType("contactMethod");
   const noteType = await getType("note");
 
-  console.log({ contactMethodType, noteType });
-
   contact.contactRoleList = [{ id: contactId, roleType: 0, displayName: contactDraft.displayName }];
 
   const toCreateCustomer = {
@@ -126,14 +152,14 @@ CRM.prototype.CreateCustomerRequest = async function (contactDraft, contactId) {
         value: contactDraft.telephone,
       },
     ],
-    noteListDto: {
-      noteList: [
-        {
-          noteType: noteType,
-          text: contactDraft.note,
-        },
-      ],
-    },
+    noteList: [
+      {
+        userId: "",
+        created: this.ToTimestampFromDate(new Date()),
+        noteType: noteType,
+        text: contactDraft.note,
+      },
+    ],
   };
 
   return this.httpClient.post("/party/api/customer", toCreateCustomer);
