@@ -32,7 +32,6 @@ CRM.prototype.GetNewContact = function (contactDraft) {
     displayName: contactDraft.firstName + " " + contactDraft.lastName,
     identifier: contactDraft.email,
     languageCode: contactDraft.languageCode,
-    contactRoleList: [],
     person: {
       firstName: contactDraft.firstName,
       lastName: contactDraft.lastName,
@@ -130,8 +129,6 @@ CRM.prototype.CreateCustomerRequest = async function (contactDraft, contactId) {
 
   const contactMethodType = await getType("contactMethod");
   const noteType = await getType("note");
-
-  contact.contactRoleList = [{ id: contactId, roleType: 0, displayName: contactDraft.displayName }];
 
   const toCreateCustomer = {
     contactId: contactId,
