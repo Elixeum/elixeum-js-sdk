@@ -74,7 +74,7 @@
       const crm = elixeum.CRM();
 
       const form = document.querySelector("#form");
-      form.addEventListener("submit", async (e) => {
+      form.addEventListener("submit", (e) => {
         e.preventDefault();
 
         const data = new FormData(form);
@@ -89,20 +89,20 @@
         };
 
         // Create draft request and send it (Send returns Promise)
-        const contactRequest = await crm.CreateContactDraftRequest(formData);
+        const contactRequest = crm.CreateContactDraftRequest(formData);
 
-        contactRequest.send().then(async (contact) => {
+        contactRequest.send().then((contact) => {
           // Create draft request and send it (Send returns Promise)
-          const customerRequest = await crm.CreateCustomerRequest(formData, contact.id);
-
-          customerRequest.send().then(
-            () => {
-              form.reset();
-            },
-            (error) => {
-              console.log(error);
-            },
-          );
+          crm.CreateCustomerRequestPromise(formData, contact.id).then((request) => {
+            request.send().then(
+              () => {
+                form.reset();
+              },
+              (error) => {
+                console.log(error);
+              },
+            );
+          });
         });
       });
     </script>

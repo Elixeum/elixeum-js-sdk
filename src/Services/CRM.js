@@ -96,68 +96,62 @@ CRM.prototype.CreateContactDraftRequest = function (contactDraft) {
 };
 
 /**
- * ContactDraft model
+ * CreateCustomerRequestPromise model
  * @param {object} contactDraft - Object containing contact draft data from the form.
- * @param {string} contactId - Id of the previosly created contact.
- * @returns {object} - Object containing formatted customer data.
+ * @param {string} contactId - Contact id.
+ * @returns {Promise} - Promise containing the result of the request.
  */
-CRM.prototype.CreateCustomerRequest = async function (contactDraft, contactId) {
+CRM.prototype.CreateCustomerRequestPromise = function (contactDraft, contactId) {
   const contact = this.GetNewContact(contactDraft);
-  const contactMethodTypes = this.GetContactMethodTypes()
-    .send()
-    .then(async (response) => {
-      return await response;
-    });
 
-  const noteTypes = this.GetNoteTypes()
-    .send()
-    .then(async (response) => {
-      return await response;
-    });
+  // Two promises, as we need to wait for both to finish
+  const contactMethodTypes = this.GetContactMethodTypes().send();
+  const noteTypes = this.GetNoteTypes().send();
 
-  const getType = async (typeOfWhat) => {
-    let types = [];
-
-    if (typeOfWhat === "contactMethod") {
-      types = await contactMethodTypes;
-    } else if (typeOfWhat === "note") {
-      types = await noteTypes;
-    }
-
-    return types.find(({ code }) => code === "OTHER") ?? types[0];
+  const getType = function (types, code) {
+    return (
+      types.find(function (type) {
+        return type.code === code;
+      }) || types[0]
+    );
   };
 
-  const contactMethodType = await getType("contactMethod");
-  const noteType = await getType("note");
+  // Wait for both promises to finish
+  return Promise.all([contactMethodTypes, noteTypes]).then(
+    function (values) {
+      const contactMethodType = getType(values[0], "OTHER");
+      const noteType = getType(values[1], "OTHER");
 
-  const toCreateCustomer = {
-    contactId: contactId,
-    contact: contact,
-    emailList: [
-      {
-        contactMethodType: contactMethodType,
-        isActive: true,
-        isMain: true,
-        value: contactDraft.email,
-      },
-    ],
-    telephoneList: [
-      {
-        contactMethodType: contactMethodType,
-        isActive: true,
-        isMain: true,
-        value: contactDraft.telephone,
-      },
-    ],
-    noteList: [
-      {
-        userId: "",
-        created: this.ToTimestampFromDate(new Date()),
-        noteType: noteType,
-        text: contactDraft.note,
-      },
-    ],
-  };
+      const createCustomerPayload = {
+        contactId: contactId,
+        contact: contact,
+        emailList: [
+          {
+            contactMethodType: contactMethodType,
+            isActive: true,
+            isMain: true,
+            value: contactDraft.email,
+          },
+        ],
+        telephoneList: [
+          {
+            contactMethodType: contactMethodType,
+            isActive: true,
+            isMain: true,
+            value: contactDraft.telephone,
+          },
+        ],
+        noteList: [
+          {
+            userId: "",
+            created: this.ToTimestampFromDate(new Date()),
+            noteType: noteType,
+            text: contactDraft.note,
+          },
+        ],
+      };
 
-  return this.httpClient.post("/party/api/customer", toCreateCustomer);
+      return this.httpClient.post("/party/api/customer", createCustomerPayload);
+    }.bind(this),
+  );
 };
