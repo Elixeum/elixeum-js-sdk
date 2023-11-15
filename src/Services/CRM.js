@@ -99,7 +99,7 @@ CRM.prototype.CreateContactDraftRequest = function (contactDraft) {
  * CreateCustomerRequestPromise model
  * @param {object} contactDraft - Object containing contact draft data from the form.
  * @param {string} contactId - Contact id.
- * @returns {Promise} - Promise containing the result of the request.
+ * @returns {Promise<HttpClient.Request>} - Promise containing request with pre-filled payload, ready to be send.
  */
 CRM.prototype.CreateCustomerRequestPromise = function (contactDraft, contactId) {
   const contact = this.GetNewContact(contactDraft);
