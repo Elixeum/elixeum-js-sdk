@@ -29,10 +29,9 @@ CRM.prototype.ContactModel = function () {
 CRM.prototype.GetNewContact = function (contactDraft) {
   return {
     currencyCode: contactDraft.currencyCode,
-    displayName: contactDraft.companyName,
+    displayName: contactDraft.firstName + " " + contactDraft.lastName,
     identifier: contactDraft.email,
     languageCode: contactDraft.languageCode,
-    contactRoleList: [],
     person: {
       firstName: contactDraft.firstName,
       lastName: contactDraft.lastName,
@@ -42,11 +41,47 @@ CRM.prototype.GetNewContact = function (contactDraft) {
 };
 
 /**
+ * ToTimestampFromDate model
+ * @param {object} value - Object containing date value.
+ * @returns {object} - Object with seconds and nanos.
+ */
+CRM.prototype.ToTimestampFromDate = function (value) {
+  // eslint-disable-next-line eqeqeq
+  if (value == null || value === "") {
+    return {
+      seconds: 0,
+      nanos: 0,
+    };
+  }
+
+  //NOTE: Implicit conversion from js string to Date object
+  let dateValue = value;
+  if (typeof value === "string" || value instanceof String) {
+    dateValue = new Date(value);
+  }
+
+  const timestamp = {
+    seconds: Math.floor(dateValue.getTime() / 1000),
+    nanos: (dateValue.getTime() % 1000) * 1e6,
+  };
+
+  return timestamp;
+};
+
+/**
  * ContactMethodType model
  * @returns {object} - Object containing contact method type data.
  */
 CRM.prototype.GetContactMethodTypes = function () {
   return this.httpClient.get("/party/api/contact-method-type");
+};
+
+/**
+ * NoteType model
+ * @returns {object} - Object containing note type data.
+ */
+CRM.prototype.GetNoteTypes = function () {
+  return this.httpClient.get("/party/api/note-type");
 };
 
 /**
@@ -61,49 +96,62 @@ CRM.prototype.CreateContactDraftRequest = function (contactDraft) {
 };
 
 /**
- * ContactDraft model
+ * CreateCustomerRequestPromise model
  * @param {object} contactDraft - Object containing contact draft data from the form.
- * @param {string} contactId - Id of the previosly created contact.
- * @returns {object} - Object containing formatted customer data.
+ * @param {string} contactId - Contact id.
+ * @returns {Promise<HttpClient.Request>} - Promise containing request with pre-filled payload, ready to be send.
  */
-CRM.prototype.CreateCustomerRequest = async function (contactDraft, contactId) {
+CRM.prototype.CreateCustomerRequestPromise = function (contactDraft, contactId) {
   const contact = this.GetNewContact(contactDraft);
-  const contactMethodTypes = this.GetContactMethodTypes()
-    .send()
-    .then(async (response) => {
-      return await response;
-    });
 
-  const getContactMethodType = async () => {
-    const loadedContactMethodTypes = await contactMethodTypes;
+  // Two promises, as we need to wait for both to finish
+  const contactMethodTypes = this.GetContactMethodTypes().send();
+  const noteTypes = this.GetNoteTypes().send();
 
-    return loadedContactMethodTypes.find(({ code }) => code === "OTHER") ?? loadedContactMethodTypes[0];
+  const getType = function (types, code) {
+    return (
+      types.find(function (type) {
+        return type.code === code;
+      }) || types[0]
+    );
   };
 
-  const contactMethodType = await getContactMethodType();
+  // Wait for both promises to finish
+  return Promise.all([contactMethodTypes, noteTypes]).then(
+    function (values) {
+      const contactMethodType = getType(values[0], "OTHER");
+      const noteType = getType(values[1], "OTHER");
 
-  contact.contactRoleList = [{ id: contactId, roleType: 0, displayName: contactDraft.displayName }];
+      const createCustomerPayload = {
+        contactId: contactId,
+        contact: contact,
+        emailList: [
+          {
+            contactMethodType: contactMethodType,
+            isActive: true,
+            isMain: true,
+            value: contactDraft.email,
+          },
+        ],
+        telephoneList: [
+          {
+            contactMethodType: contactMethodType,
+            isActive: true,
+            isMain: true,
+            value: contactDraft.telephone,
+          },
+        ],
+        noteList: [
+          {
+            userId: "",
+            created: this.ToTimestampFromDate(new Date()),
+            noteType: noteType,
+            text: contactDraft.note,
+          },
+        ],
+      };
 
-  const toCreateCustomer = {
-    contactId: contactId,
-    contact: contact,
-    emailList: [
-      {
-        contactMethodType: contactMethodType,
-        isActive: true,
-        isMain: true,
-        value: contactDraft.email,
-      },
-    ],
-    telephoneList: [
-      {
-        contactMethodType: contactMethodType,
-        isActive: true,
-        isMain: true,
-        value: contactDraft.telephone,
-      },
-    ],
-  };
-
-  return this.httpClient.post("/party/api/customer", toCreateCustomer);
+      return this.httpClient.post("/party/api/customer", createCustomerPayload);
+    }.bind(this),
+  );
 };

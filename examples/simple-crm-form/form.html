@@ -18,7 +18,6 @@
         <input type="text" name="last_name" id="last_name" placeholder="Příjmení" />
         <input type="tel" name="telephone" id="telephone" placeholder="Telefonní číslo" />
         <input type="email" name="email" id="email" placeholder="E-mailová adresa" />
-        <!-- <input type="submit" value="submit" /> -->
         <button type="submit" class="form__submit">
           Odeslat Štěpánovi
           <img src="assets/stepan.png" alt="Štěpán" />
@@ -27,8 +26,8 @@
     </div>
     <script>
       // Prefill form with dummy data
-      // TODO: Remove this, it's just for demo purposes
-      const prefill = true;
+      // This is just for demo purposes
+      const prefill = false;
 
       if (prefill) {
         window.onload = fillFormWithDummyData;
@@ -75,12 +74,12 @@
       const crm = elixeum.CRM();
 
       const form = document.querySelector("#form");
-      form.addEventListener("submit", async (e) => {
+      form.addEventListener("submit", (e) => {
         e.preventDefault();
 
         const data = new FormData(form);
         const formData = {
-          companyName: data.get("company_name") ?? "",
+          note: data.get("company_name") ?? "",
           firstName: data.get("first_name") ?? "",
           lastName: data.get("last_name") ?? "",
           telephone: data.get("telephone") ?? "",
@@ -90,20 +89,20 @@
         };
 
         // Create draft request and send it (Send returns Promise)
-        const contactRequest = await crm.CreateContactDraftRequest(formData);
+        const contactRequest = crm.CreateContactDraftRequest(formData);
 
-        contactRequest.send().then(async (contact) => {
+        contactRequest.send().then((contact) => {
           // Create draft request and send it (Send returns Promise)
-          const customerRequest = await crm.CreateCustomerRequest(formData, contact.id);
-
-          customerRequest.send().then(
-            () => {
-              form.reset();
-            },
-            (error) => {
-              console.log(error);
-            },
-          );
+          crm.CreateCustomerRequestPromise(formData, contact.id).then((request) => {
+            request.send().then(
+              () => {
+                form.reset();
+              },
+              (error) => {
+                console.log(error);
+              },
+            );
+          });
         });
       });
     </script>
